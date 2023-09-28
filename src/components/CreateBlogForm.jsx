@@ -1,7 +1,13 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const CreateBlogForm = ({ blogs, setBlogs, setNotification }) => {
+const CreateBlogForm = ({
+  blogs,
+  setBlogs,
+  setNotification,
+  user,
+  blogFormRef,
+}) => {
   const [newTitle, setNewTitle] = useState("");
   const [newAuthor, setNewAuthor] = useState("");
   const [newURL, setNewURL] = useState("");
@@ -17,7 +23,7 @@ const CreateBlogForm = ({ blogs, setBlogs, setNotification }) => {
       };
 
       const newBlog = await blogService.create(blogObject);
-      setBlogs(blogs.concat(newBlog));
+      setBlogs(blogs.concat({ ...newBlog, user: { name: user.username, id: user.id } }));
       setNotification({
         message: `a new blog: ${newTitle} by ${newAuthor} has been added.`,
         error: false,
@@ -34,6 +40,7 @@ const CreateBlogForm = ({ blogs, setBlogs, setNotification }) => {
         setNotification({ message: "" });
       }, 5000);
     }
+    blogFormRef.current.toggleVisibility();
   };
 
   return (
@@ -65,7 +72,7 @@ const CreateBlogForm = ({ blogs, setBlogs, setNotification }) => {
           onChange={({ target }) => setNewURL(target.value)}
         />
       </div>
-      <button type="submit">Create Blog</button>
+      <button type="submit">Create blog</button>
     </form>
   );
 };
