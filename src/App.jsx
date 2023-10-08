@@ -1,43 +1,41 @@
-import { useState, useEffect, useRef } from "react";
-import blogService from "./services/blogs";
-import Blog from "./components/Blog";
-import LoginForm from "./components/LoginForm";
-import CreateBlogForm from "./components/CreateBlogForm";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
+import { useState, useEffect, useRef } from 'react'
+import blogService from './services/blogs'
+import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import CreateBlogForm from './components/CreateBlogForm'
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({
-    message: "",
+    message: '',
     error: true,
-  });
+  })
 
-  const blogFormRef = useRef();
-
-  console.log('blogs', blogs)
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
-      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
-      setBlogs(sortedBlogs);
-    });
-  }, []);
+      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortedBlogs)
+    })
+  }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
+  }, [])
 
   const handleLogout = () => {
-    window.localStorage.removeItem("loggedBlogappUser");
-    setUser(null);
-  };
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+  }
 
   return (
     <div>
@@ -76,7 +74,7 @@ const App = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

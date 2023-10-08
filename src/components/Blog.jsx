@@ -1,5 +1,6 @@
-import { useState } from "react"
-import blogService from "../services/blogs"
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog, setBlogs, setNotification, userid }) => {
   const [showBlog, setShowBlog] = useState(false)
@@ -7,14 +8,12 @@ const Blog = ({ blog, setBlogs, setNotification, userid }) => {
   const [blogLikes, setBlogLikes] = useState(blog.likes || 0)
 
   const blogStyle = {
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-    padding: "10px",
-    margin: "10px",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    padding: '10px',
+    margin: '10px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
   }
-
-  console.log(blog.likedBy)
 
   const handleDelete = async () => {
     setButtonDisable(true)
@@ -28,14 +27,14 @@ const Blog = ({ blog, setBlogs, setNotification, userid }) => {
         setBlogs((prevBlogs) => {
           return prevBlogs.filter((x) => x.id !== blog.id)
         })
-        setNotification({ message: "Blog deleted successfully", error: false })
+        setNotification({ message: 'Blog deleted successfully', error: false })
         setTimeout(() => {
-          setNotification({ message: "" })
+          setNotification({ message: '' })
         }, 5000)
       } catch (exception) {
-        setNotification({ message: "Blog not deleted", error: true })
+        setNotification({ message: 'Blog not deleted', error: true })
         setTimeout(() => {
-          setNotification({ message: "" })
+          setNotification({ message: '' })
         }, 5000)
       }
     }
@@ -65,9 +64,9 @@ const Blog = ({ blog, setBlogs, setNotification, userid }) => {
         })
       })
     } catch (exception) {
-      setNotification({ message: "Like not updated", error: true })
+      setNotification({ message: 'Like not updated', error: true })
       setTimeout(() => {
-        setNotification({ message: "" })
+        setNotification({ message: '' })
       }, 5000)
     }
     setButtonDisable(false)
@@ -98,7 +97,7 @@ const Blog = ({ blog, setBlogs, setNotification, userid }) => {
       <p>
         {`${blog.title} ${blog.author} `}
         <button onClick={() => setShowBlog(!showBlog)}>
-          {showBlog ? "Hide" : "View"}
+          {showBlog ? 'Hide' : 'View'}
         </button>
       </p>
       {showBlog && (
@@ -107,7 +106,7 @@ const Blog = ({ blog, setBlogs, setNotification, userid }) => {
           <p>
             {`likes: ${blogLikes} `}
             <button disabled={buttonDisable} onClick={() => handleLike()}>
-              {blog.likedBy.indexOf(userid) !== -1 ? "Unlike" : "Like"}
+              {blog.likedBy.indexOf(userid) !== -1 ? 'Unlike' : 'Like'}
             </button>
           </p>
           <p>{blog.user.name}</p>
@@ -120,6 +119,13 @@ const Blog = ({ blog, setBlogs, setNotification, userid }) => {
       )}
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  userid: PropTypes.string.isRequired,
 }
 
 export default Blog

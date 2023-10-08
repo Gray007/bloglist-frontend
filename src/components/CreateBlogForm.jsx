@@ -1,5 +1,6 @@
-import { useState } from "react";
-import blogService from "../services/blogs";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import blogService from '../services/blogs'
 
 const CreateBlogForm = ({
   blogs,
@@ -8,40 +9,40 @@ const CreateBlogForm = ({
   user,
   blogFormRef,
 }) => {
-  const [newTitle, setNewTitle] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newURL, setNewURL] = useState("");
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newURL, setNewURL] = useState('')
 
   const addBlog = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
       const blogObject = {
         title: newTitle,
         author: newAuthor,
         url: newURL,
-      };
+      }
 
-      const newBlog = await blogService.create(blogObject);
-      setBlogs(blogs.concat({ ...newBlog, user: { name: user.username, id: user.id } }));
+      const newBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat({ ...newBlog, user: { name: user.username, id: user.id } }))
       setNotification({
         message: `a new blog: ${newTitle} by ${newAuthor} has been added.`,
         error: false,
-      });
+      })
       setTimeout(() => {
-        setNotification({ message: "" });
-      }, 5000);
-      setNewTitle("");
-      setNewAuthor("");
-      setNewURL("");
+        setNotification({ message: '' })
+      }, 5000)
+      setNewTitle('')
+      setNewAuthor('')
+      setNewURL('')
     } catch (exception) {
-      setNotification({ message: "Blog not added", error: true });
+      setNotification({ message: 'Blog not added', error: true })
       setTimeout(() => {
-        setNotification({ message: "" });
-      }, 5000);
+        setNotification({ message: '' })
+      }, 5000)
     }
-    blogFormRef.current.toggleVisibility();
-  };
+    blogFormRef.current.toggleVisibility()
+  }
 
   return (
     <form onSubmit={addBlog}>
@@ -74,7 +75,14 @@ const CreateBlogForm = ({
       </div>
       <button type="submit">Create blog</button>
     </form>
-  );
-};
+  )
+}
 
-export default CreateBlogForm;
+CreateBlogForm.propTypes = {
+  blogs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+}
+
+export default CreateBlogForm
